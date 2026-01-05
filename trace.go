@@ -142,6 +142,11 @@ func (t *Trace) Update(ctx context.Context, opts ...TraceOption) error {
 	// IMPORTANT: JsonListString fields must be set to valid JSON (including "null")
 	// An empty JsonListString produces malformed JSON in the generated encoder.
 	nullJSON := api.JsonListString([]byte("null"))
+	inputJSON := nullJSON
+	if t.input != nil {
+		data, _ := json.Marshal(t.input)
+		inputJSON = api.JsonListString(data)
+	}
 
 	outputJSON := nullJSON
 	if t.output != nil {
@@ -158,7 +163,7 @@ func (t *Trace) Update(ctx context.Context, opts ...TraceOption) error {
 	req := api.TraceBatchUpdate{
 		Ids: []uuid.UUID{traceUUID},
 		Update: api.TraceUpdate{
-			Input:    nullJSON, // Required field, must be valid JSON
+			Input:    inputJSON, // Required field, must be valid JSON
 			Output:   outputJSON,
 			Metadata: metadataJSON,
 			Tags:     options.tags,

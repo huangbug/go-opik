@@ -183,6 +183,11 @@ func (s *Span) Update(ctx context.Context, opts ...SpanOption) error {
 	// IMPORTANT: JsonListString fields must be set to valid JSON (including "null")
 	// An empty JsonListString produces malformed JSON in the generated encoder.
 	nullJSON := api.JsonListString([]byte("null"))
+	inputJSON := nullJSON
+	if s.input != nil {
+		data, _ := json.Marshal(s.input)
+		inputJSON = api.JsonListString(data)
+	}
 
 	outputJSON := nullJSON
 	if s.output != nil {
@@ -200,7 +205,7 @@ func (s *Span) Update(ctx context.Context, opts ...SpanOption) error {
 		Ids: []uuid.UUID{spanUUID},
 		Update: api.SpanUpdate{
 			TraceID:  traceUUID,
-			Input:    nullJSON, // Required field, must be valid JSON
+			Input:    inputJSON, // Required field, must be valid JSON
 			Output:   outputJSON,
 			Metadata: metadataJSON,
 			Model:    api.NewOptString(s.model),
