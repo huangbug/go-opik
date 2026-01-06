@@ -167,6 +167,7 @@ func (t *Trace) Update(ctx context.Context, opts ...TraceOption) error {
 			Output:   outputJSON,
 			Metadata: metadataJSON,
 			Tags:     options.tags,
+			ThreadID: api.NewOptString(options.threadID),
 		},
 	}
 
@@ -197,4 +198,5 @@ func (t *Trace) AddFeedbackScore(ctx context.Context, name string, value float64
 		ID: traceUUID,
 	})
 }
+
 

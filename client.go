@@ -168,6 +168,7 @@ func (c *Client) Trace(ctx context.Context, name string, opts ...TraceOption) (*
 			Output:      outputJSON,
 			Metadata:    metadataJSON,
 			Tags:        options.tags,
+			ThreadID:    api.NewOptString(options.threadID),
 		}},
 	}
 
@@ -187,6 +188,7 @@ func (c *Client) Trace(ctx context.Context, name string, opts ...TraceOption) (*
 		output:      options.output,
 		metadata:    options.metadata,
 		tags:        options.tags,
+		threadID:    options.threadID,
 	}, nil
 }
 
@@ -414,3 +416,4 @@ func (c *Client) ListSpans(ctx context.Context, traceID string, page, size int) 
 
 	return spans, nil
 }
+
