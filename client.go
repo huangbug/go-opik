@@ -188,7 +188,6 @@ func (c *Client) Trace(ctx context.Context, name string, opts ...TraceOption) (*
 		output:      options.output,
 		metadata:    options.metadata,
 		tags:        options.tags,
-		threadID:    options.threadID,
 	}, nil
 }
 
